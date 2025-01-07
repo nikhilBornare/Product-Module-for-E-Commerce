@@ -20,6 +20,7 @@ const ProductSchema: Schema<IProduct> = new Schema(
       type: String,
       required: true,
       minlength: 3,
+      unique:true
     },
     brand: {
       type: String,
@@ -31,6 +32,7 @@ const ProductSchema: Schema<IProduct> = new Schema(
     },
     product_description: {
       type: String,
+      required: false,
       minlength: 10,
     },
     price: {
