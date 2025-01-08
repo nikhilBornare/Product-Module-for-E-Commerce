@@ -20,7 +20,7 @@ export const validateRequest = (req: Request, res: Response, next: NextFunction)
 // Middleware for checking unique product name (if applicable)
 export const checkUniqueFields = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { name } = req.body; // Only checking for the product name uniqueness
+        const { name } = req.body; 
         const id = req.params?.id;
 
         // Check if a product with the same name already exists (excluding the current product ID)

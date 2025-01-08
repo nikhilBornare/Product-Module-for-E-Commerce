@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import Product from "../models/productModel";  // Import the product model
+import Product from "../models/productModel";  
 import { ApplicationError } from "../error-handler/applicationError";
 import getFilteredSortedPaginatedProducts from "../utils/features";
 import logger from "../utils/logger";
@@ -68,21 +68,29 @@ export const createMultipleProducts = async (req: Request, res: Response, next: 
 export const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const queryFeatures = {
-        search: req.query.search as string,
-        priceMin: parseFloat(req.query.priceMin as string),
-        priceMax: parseFloat(req.query.priceMax as string),
-        rating: req.query.rating as string,
-        sort: 
-          (req.query.sort === 'price' ? 'priceDesc' : req.query.sort) as 
-          "name" | "createdAtAsc" | "updatedAtAsc" | "createdAtDesc" | "updatedAtDesc" | "priceDesc" | "priceAsc" | "ratingAsc" | "ratingDesc" | undefined,
-        page: parseInt(req.query.page as string, 10),
-        limit: parseInt(req.query.limit as string, 10),
-      };
-      
-      
+      search: req.query.search as string,
+      priceMin: req.query.priceMin ? parseFloat(req.query.priceMin as string) : undefined,
+      priceMax: req.query.priceMax ? parseFloat(req.query.priceMax as string) : undefined,
+      ratings: req.query.ratings as string,
+      sort: req.query.sort as
+        | "name"
+        | "createdAtAsc"
+        | "updatedAtAsc"
+        | "createdAtDesc"
+        | "updatedAtDesc"
+        | "priceAsc"
+        | "priceDesc"
+        | "ratingsAsc"
+        | "ratingsDesc"
+        | undefined,
+      page: req.query.page ? parseInt(req.query.page as string, 10) : 1,
+      limit: req.query.limit ? parseInt(req.query.limit as string, 10) : 10,
+    };
 
     const { products, total, page, limit } = await getFilteredSortedPaginatedProducts(queryFeatures);
+
     logger.info(`Fetched ${products.length} products from the database (Total: ${total})`);
+
     res.status(200).json({
       success: true,
       data: products,
