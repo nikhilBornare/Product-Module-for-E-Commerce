@@ -35,7 +35,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // Product Routes
-app.use('/api/products', productRoutes); // Add product routes
+app.use('/api/products', productRoutes); 
 
 // Default 404 route
 app.use((req, res) => {
