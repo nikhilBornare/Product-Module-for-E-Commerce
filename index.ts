@@ -4,9 +4,9 @@ import connectDB from './config/db';
 import productRoutes from './routes/productRoutes'; // Import product routes
 import { errorHandler } from './error-handler/applicationError';
 import logger from './utils/logger';
-// import swaggerUi from 'swagger-ui-express';
-// import * as swaggerDocument from './swagger.json';
-// import apiLimiter from './middleware/rateLimiter';
+ import swaggerUi from 'swagger-ui-express';
+ import * as swaggerDocument from './swagger.json';
+ import apiLimiter from './middleware/rateLimiter';
 
 dotenv.config();
 const app = express();
@@ -15,10 +15,10 @@ const app = express();
 app.use(express.json());
 
 // Serve Swagger API documentation
-//app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Rate limiting to all requests
-//app.use(apiLimiter);
+app.use(apiLimiter);
 
 // Connect to Database
 connectDB();
