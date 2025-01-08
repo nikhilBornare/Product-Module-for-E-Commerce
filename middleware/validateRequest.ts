@@ -5,17 +5,34 @@ import { productSchema } from "../validation/productValidation";
 
 // Validation middleware
 export const validateRequest = (req: Request, res: Response, next: NextFunction) => {
-    const { error } = productSchema.validate(req.body, { abortEarly: false });
-
-    if (error) {
-        const formattedErrors = error.details.map((detail) => ({
-            field: detail.context?.key || "unknown",
-            message: detail.message,
-        }));
-        return next(new ApplicationError("Validation failed", 400, formattedErrors));
+    const updates = req.body; // This should be an array of updates
+    if (!Array.isArray(updates) || updates.length === 0) {
+        return next(new ApplicationError("Invalid or empty array of updates provided.", 400));
     }
+
+    const errors = [];
+
+    for (const update of updates) {
+        const { error } = productSchema.validate(update.updateData, { abortEarly: false });
+
+        if (error) {
+            errors.push({
+                id: update.id,
+                errors: error.details.map((detail) => ({
+                    field: detail.context?.key || "unknown",
+                    message: detail.message,
+                })),
+            });
+        }
+    }
+
+    if (errors.length > 0) {
+        return next(new ApplicationError("Validation failed", 400, errors));
+    }
+
     next();
 };
+
 
 // Middleware for checking unique product name (if applicable)
 export const checkUniqueFields = async (req: Request, res: Response, next: NextFunction) => {
