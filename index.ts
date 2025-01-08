@@ -42,7 +42,7 @@ app.use((req, res) => {
   res.status(404).json({
     success: false,
     message:
-      'API not found. Please check our documentation for more information at http://localhost:4000/api-docs/',
+      'API not found. Please check our documentation for more information at http://localhost:4200/api-docs/',
   });
 });
 
