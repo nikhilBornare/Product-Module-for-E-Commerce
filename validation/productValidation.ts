@@ -3,10 +3,10 @@ import Joi from "joi";
 // Define validation schema for a single product
 const singleProductSchema = Joi.object({
     name: Joi.string()
-        .trim()  
-        .min(3)  
-        .pattern(/^[a-zA-Z0-9 ]+$/)  
-        .required()  
+        .trim()
+        .min(3)
+        .pattern(/^[a-zA-Z0-9 ]+$/)
+        .required()
         .messages({
             "string.empty": "Product name is required.",
             "string.min": "Product name must be at least 3 characters long.",
@@ -73,15 +73,41 @@ const singleProductSchema = Joi.object({
             "number.min": "Total stock cannot be negative.",
             "any.required": "Total stock availability is required.",
         }),
+
+    category: Joi.string()
+        .required()
+        .valid('electronics', 'clothing', 'others') // Example of possible categories
+        .messages({
+            "string.empty": "Category is required.",
+            "any.only": "Category must be one of 'electronics', 'clothing', or 'others'."
+        }),
+
+    isFeatured: Joi.boolean()
+        .required()
+        .messages({
+            "boolean.base": "Featured status must be true or false.",
+            "any.required": "Featured status is required.",
+        }),
+
+    isActive: Joi.boolean()
+        .required()
+        .messages({
+            "boolean.base": "Active status must be true or false.",
+            "any.required": "Active status is required.",
+        }),
+
     variants: Joi.array()
         .items(Joi.string().trim().min(1))
-        .required()
-        .messages({ 
-            "array.base":"Variants must be an array of strings.",
-            "array.empty": "Variants are required.",
-            "string.min": "Each variant must be at least 1 character long.",
-            "any.required": "Variants are required.",
+        .when('category', {
+            is: 'electronics',
+            then: Joi.required().messages({
+                "array.base": "Variants must be an array of strings.",
+                "array.empty": "Variants are required for electronics.",
+                "any.required": "Variants are required for electronics.",
+            }),
+            otherwise: Joi.optional(),
         }),
+
     colours: Joi.array()
         .items(Joi.string().trim().min(1))
         .required()
@@ -90,6 +116,18 @@ const singleProductSchema = Joi.object({
             "array.empty": "Colours are required.",
             "string.min": "Each colour must be at least 1 character long.",
             "any.required": "Colours are required.",
+        }),
+
+    size: Joi.array()
+        .items(Joi.string().trim().min(1))
+        .when('category', {
+            is: 'clothing',
+            then: Joi.required().messages({
+                "array.base": "Size must be an array of strings.",
+                "array.empty": "Size is required for clothing.",
+                "any.required": "Size is required for clothing.",
+            }),
+            otherwise: Joi.optional(),
         }),
 });
 
