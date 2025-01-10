@@ -76,10 +76,9 @@ const singleProductSchema = Joi.object({
 
     category: Joi.string()
         .required()
-        .valid('electronics', 'clothing', 'others') // Example of possible categories
+        .valid('electronics', 'clothing', 'others') 
         .messages({
             "string.empty": "Category is required.",
-            "any.only": "Category must be one of 'electronics', 'clothing', or 'others'."
         }),
 
     isFeatured: Joi.boolean()
