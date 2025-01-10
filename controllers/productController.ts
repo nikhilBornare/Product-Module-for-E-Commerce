@@ -63,7 +63,6 @@ export const createMultipleProducts = async (req: Request, res: Response, next: 
   }
 };
 
-
 // getAllProducts
 export const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -84,7 +83,7 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
         | "ratingsDesc"
         | undefined,
       page: req.query.page ? parseInt(req.query.page as string, 10) : 1,
-      limit: req.query.limit ? parseInt(req.query.limit as string, 10) : 10,
+      limit: req.query.limit ? parseInt(req.query.limit as string, 10) : 25,
     };
 
     const { products, total, page, limit } = await getFilteredSortedPaginatedProducts(queryFeatures);

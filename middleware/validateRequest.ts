@@ -7,7 +7,7 @@ import { productSchema } from "../validation/productValidation";
 export const validateRequest = (req: Request, res: Response, next: NextFunction) => {
     const { error } = productSchema.validate(req.body, { abortEarly: false });
 
-    if (error) {    
+    if (error) {
         const formattedErrors = error.details.map((detail) => ({
             field: detail.context?.key || "unknown",
             message: detail.message,

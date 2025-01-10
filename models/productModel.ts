@@ -1,3 +1,4 @@
+import { required } from "joi";
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IProduct extends Document {
@@ -10,6 +11,8 @@ export interface IProduct extends Document {
   ratings: number;
   cod_availability: boolean;
   total_stock_availability: number;
+  variants: string[]; // Array for multiple variants
+  colours: string[]; // Array for multiple colours
   createdAt: Date;
     updatedAt: Date;
 }
@@ -59,6 +62,14 @@ const ProductSchema: Schema<IProduct> = new Schema(
       type: Number,
       required: true,
       min: 0,
+    },
+    variants:{
+      type:[String],
+      required:true,
+    },
+    colours:{
+      type:[String],
+      required:true,
     },
   },
   { timestamps: true }

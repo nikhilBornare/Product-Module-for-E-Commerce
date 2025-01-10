@@ -73,6 +73,24 @@ const singleProductSchema = Joi.object({
             "number.min": "Total stock cannot be negative.",
             "any.required": "Total stock availability is required.",
         }),
+    variants: Joi.array()
+        .items(Joi.string().trim().min(1))
+        .required()
+        .messages({ 
+            "array.base":"Variants must be an array of strings.",
+            "array.empty": "Variants are required.",
+            "string.min": "Each variant must be at least 1 character long.",
+            "any.required": "Variants are required.",
+        }),
+    colours: Joi.array()
+        .items(Joi.string().trim().min(1))
+        .required()
+        .messages({
+            "array.base": "Colours must be an array of strings.",
+            "array.empty": "Colours are required.",
+            "string.min": "Each colour must be at least 1 character long.",
+            "any.required": "Colours are required.",
+        }),
 });
 
 // Define validation schema for an array of products
