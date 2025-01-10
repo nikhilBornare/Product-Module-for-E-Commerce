@@ -11,10 +11,14 @@ export interface IProduct extends Document {
   ratings: number;
   cod_availability: boolean;
   total_stock_availability: number;
+  category: string;
+  isFeatured: boolean;
+  isActive: boolean; 
   variants: string[]; // Array for multiple variants
   colours: string[]; // Array for multiple colours
+  size: string[]; // Array for multiple sizes
   createdAt: Date;
-    updatedAt: Date;
+  updatedAt: Date;
 }
 
 const ProductSchema: Schema<IProduct> = new Schema(
@@ -23,7 +27,7 @@ const ProductSchema: Schema<IProduct> = new Schema(
       type: String,
       required: true,
       minlength: 3,
-      unique:true
+      unique: true,
     },
     brand: {
       type: String,
@@ -63,13 +67,29 @@ const ProductSchema: Schema<IProduct> = new Schema(
       required: true,
       min: 0,
     },
-    variants:{
-      type:[String],
-      required:true,
+    category: {
+      type: String,
+      required: true,
     },
-    colours:{
-      type:[String],
-      required:true,
+    isFeatured: {
+      type: Boolean,
+      required: true,
+    },
+    isActive: {
+      type: Boolean,
+      required: true,
+    },
+    variants: {
+      type: [String],
+      required: true,
+    },
+    colours: {
+      type: [String],
+      required: true,
+    },
+    size: {
+      type: [String],
+      required: true,
     },
   },
   { timestamps: true }

@@ -35,7 +35,7 @@ const validateObjectId = (
 router.post("/bulk", validateRequest, checkUniqueFields, createMultipleProducts);
 
 // Route to update multiple products
-router.put("/bulk", validateRequest, updateMultipleProducts);
+router.put("/bulk",  updateMultipleProducts);
 
 // Route to delete multiple products by ID
 router.delete("/", deleteMultipleProducts);
