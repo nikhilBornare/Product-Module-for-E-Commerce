@@ -17,10 +17,15 @@ interface QueryFeatures {
     | "ratingsDesc";
   page?: number;
   limit?: number;
+  category?: "electronics" | "clothing";
+  colours?: string[];
+  variants?: string[];
+  size?: string[];
 }
 
 const getFilteredSortedPaginatedProducts = async (queryFeatures: QueryFeatures) => {
-  const { search, ratings, priceMin, priceMax, sort, page = 1, limit = 10 } = queryFeatures;
+  const { search, ratings, priceMin, priceMax, sort, page = 1, limit = 10, category, colours, variants, size } =
+    queryFeatures;
 
   const query: any = {};
 
@@ -31,7 +36,7 @@ const getFilteredSortedPaginatedProducts = async (queryFeatures: QueryFeatures) 
 
   // Filter by product ratings
   if (ratings) {
-    query.ratings = { $gte: parseFloat(ratings) }; 
+    query.ratings = { $gte: parseFloat(ratings) };
   }
 
   // Filter by price range
@@ -42,6 +47,25 @@ const getFilteredSortedPaginatedProducts = async (queryFeatures: QueryFeatures) 
     }
     if (priceMax !== undefined) {
       query.price.$lte = priceMax;
+    }
+  }
+
+  // Additional filters for variants and colours (electronics) or size and colours (clothing)
+  if (category === "electronics") {
+    if (colours) {
+      query.colours = { $in: colours }; // Filter by colours
+    }
+    if (variants) {
+      query.variants = { $in: variants }; // Filter by variants
+    }
+  }
+
+  if (category === "clothing") {
+    if (colours) {
+      query.colours = { $in: colours }; // Filter by colours
+    }
+    if (size) {
+      query.size = { $in: size }; // Filter by size
     }
   }
 

@@ -84,6 +84,10 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
         | undefined,
       page: req.query.page ? parseInt(req.query.page as string, 10) : 1,
       limit: req.query.limit ? parseInt(req.query.limit as string, 10) : 50,
+      category: req.query.category as "electronics" | "clothing" | undefined,
+      colours: req.query.colours ? (req.query.colours as string).split(",") : undefined,
+      variants: req.query.variants ? (req.query.variants as string).split(",") : undefined,
+      size: req.query.size ? (req.query.size as string).split(",") : undefined,
     };
 
     const { products, total, page, limit } = await getFilteredSortedPaginatedProducts(queryFeatures);
@@ -102,6 +106,8 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
     next(new ApplicationError((error as Error).message, 500));
   }
 };
+
+
 
 // Get a product by ID
 export const getProductById = async (req: Request, res: Response, next: NextFunction) => {

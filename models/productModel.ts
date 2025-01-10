@@ -1,4 +1,3 @@
-import { required } from "joi";
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IProduct extends Document {
@@ -14,7 +13,7 @@ export interface IProduct extends Document {
   category: string;
   isFeatured: boolean;
   isActive: boolean; 
-  variants: string[]; // Array for multiple variants
+  variants: string[]; // Array for multiple variant s
   colours: string[]; // Array for multiple colours
   size: string[]; // Array for multiple sizes
   createdAt: Date;
@@ -70,6 +69,7 @@ const ProductSchema: Schema<IProduct> = new Schema(
     category: {
       type: String,
       required: true,
+      enum: ['electronics', 'clothing', 'others'], // Add enum validation
     },
     isFeatured: {
       type: Boolean,
@@ -81,7 +81,9 @@ const ProductSchema: Schema<IProduct> = new Schema(
     },
     variants: {
       type: [String],
-      required: true,
+      required: function() {
+        return this.category === 'electronics'; // Conditional requirement based on category
+      },
     },
     colours: {
       type: [String],
@@ -89,7 +91,9 @@ const ProductSchema: Schema<IProduct> = new Schema(
     },
     size: {
       type: [String],
-      required: true,
+      required: function() {
+        return this.category === 'clothing'; // Conditional requirement based on category
+      },
     },
   },
   { timestamps: true }
